@@ -1,0 +1,50 @@
+<odoo>
+    <data>
+        <template id="hms_patient_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="patient">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="col-sm-6">
+                                <h3 style="color: red;"><span t-out="patient.first_name"/> <span t-out="patient.last_name"/></h3>
+                            </div>
+                            <div class="col-sm-6">
+                                <h3><span>Birth Date</span>style="color: red;"><span t-out="patient.birth_date"/></h3>
+                                <h3><span>Age</span>style="color: red;"><span t-out="patient.age"/></h3>
+                                <h3><span>Department</span>style="color: red;"><span t-out="patient.department_id.name"/></h3>
+                                <h3><span>Department</span> <t t-foreach="patient.doctor_id" t-as="doctors">
+                                    <span t-out="doctor.first_name"/>
+                                </t> </h3>
+                            </div>
+                            <div class="col-sm-6">
+                                <h3><span>PCR</span>style="color: red;"><span t-out="patient.pcr"/></h3>
+                                <h3><span>Blood Type</span>style="color: red;"><span t-out="patient.blood_type"/></h3>
+                                <h3><span>Email</span>style="color: red;"><span t-out="patient.email"/></h3>
+                            </div>
+                            <div class="col-sm-6">
+                                <img style="width:250px;height:50px" t-att-src="image_data_uri(patient.image)"/>
+                            </div>
+                            <div style="text-align:center">Log History</div>
+                            <t t-if="patient.log_history">
+                                <table class="table-striped">
+                                        <tr>
+                                            <td>User</td>
+                                            <td>Data</td>
+                                            <td>Info</td>
+                                        </tr>
+                                        <t t-foreach="patient.log_history" t-as="log_line">
+                                            <tr>
+                                                <td><span t-out="log_line.create_uid"/></td>
+                                                <td><span t-out="log_line.create_date"/></td>
+                                                <td><span t-out="log_line.description"/></td>
+                                            </tr>
+                                        </t>
+                                </table>
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,79 @@
+<odoo>
+    <data>
+        <record id="hms_views_form" model="ir.ui.view">
+            <field name="name">hms_form_view</field>
+            <field name="model">hms.patient</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="change_state" type="object" attrs="{'invisible':[('state', '!=', 'Undetermined')]}" string="Change Good"/>
+                        <button name="change_state" type="object" attrs="{'invisible':[('state', '!=', 'Good')]}" string="Change Fair"/>
+                        <button name="change_state" type="object" attrs="{'invisible':[('state', '!=', 'Fair')]}" string="Change Serious"/>
+                        <button name="reset_state" type="object"  string="Set to New"/>
+                        <field name="state" widget="statusbar" statusbar_visible="Undetermined, Good, Fair, Serious"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="first_name"/>
+                            <field name="last_name"/>
+                            <field name="birth_date"/>
+                            <field name="age"/>
+                            <field name="address"/>
+                            <field name="email"/>
+                            <field name="history" attrs="{
+                            'invisible':[('age', '&lt;', 50)]
+                            }"/>
+                        </group>
+                        <group>
+                            <field name="blood_type"/>
+                            <field name="pcr"/>
+                            <field name="cr_ratio" attrs="{
+                            'required':[('pcr', '=', True)]
+                            }"/>
+                            <field name="department_id" domain="[('is_opened', '=', True)]"/>
+                            <field name="department_capacity"/>
+                            <field name="dept_open"/>
+                            <field name="doctor_id" widget="many2many_tags" groups="HMS.hms_manager_group" attrs="{
+                            'readonly':[('department_id', '=', False)]
+                            }"/>
+                        </group>
+                        <group>
+                            <field name="log_history">
+                                <tree>
+                                    <field name="create_uid"/>
+                                    <field name="create_date"/>
+                                    <field name="description"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="hms_views" model="ir.ui.view">
+            <field name="name">hms_tree_view</field>
+            <field name="model">hms.patient</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="change_state" type="object" attrs="{'invisible':[('state', '!=', 'Undetermined')]}" string="Change Good"/>
+                        <button name="change_state" type="object" attrs="{'invisible':[('state', '!=', 'Good')]}" string="Change Fair"/>
+                        <button name="change_state" type="object" attrs="{'invisible':[('state', '!=', 'Fair')]}" string="Change Serious"/>
+                        <button name="reset_state" type="object"  string="Set to New"/>
+                        <field name="state" widget="statusbar" statusbar_visible="Undetermined, Good, Fair, Serious"/>
+                    </header>
+                </form>
+            </field>
+        </record>
+        <record id="hms_action" model="ir.actions.act_window">
+            <field name="name">HMS</field>
+            <field name="res_model">hms.patient</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="hms_root_menu" name="HMS"/>
+        <menuitem id="hms_data_menu" name="Data" parent="hms_root_menu"/>
+        <menuitem id="hms_patient_menu" name="students" parent="hms_data_menu" action="hms_action"/>
+    </data>
+</odoo>
+
+
